@@ -3,7 +3,7 @@
 </script>
 
 <h1>Hello ´{name}´ from Header</h1>
-<h2>{name.toUpperCase()}</h2>
+<h2>{name.toUpperCase()}'s Store</h2>
 
 <style>
 
