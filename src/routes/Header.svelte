@@ -1,18 +1,13 @@
 <script lang="ts">
-    let { name,
-        fakeName = null
-     }: {
-        name: string,
-        fakeName?: string | null
-     } = $props()
-    let storeName = $derived(fakeName || name + "'s Store" )
+	let {
+		name
+	}: {
+		name: string;
+		fakeName?: string | null;
+	} = $props();
 </script>
 
-<h1>Hello ´{fakeName || name}´ from Header</h1>
-<h2>{storeName}</h2>
-
-{fakeName}
+<h1>{name ? name + "'s" : 'User Form'}</h1>
 
 <style>
-
 </style>

@@ -71,38 +71,30 @@
 	}
 </script>
 
+<Header name={formState.name} />
+
 <main>
 	<p>step: {formState.step}</p>
 
 	{#if formState.step === steps.NAME}
 		<div>
-			<label for="name">Your Name</label>
-			<input type="text" name="name" id="name" bind:value={formState.name} />
+			{@render formStep({id: "name", type: "text", question: "Your Name"})}
 		</div>
 	{:else if formState.step === steps.BIRTHDAY}
 		<div>
-			<p>Name: {formState.name}</p>
-			<label for="birthday">Your Birthday</label>
-			<input type="date" name="birthday" id="birthday" bind:value={formState.birthday} />
+			{@render formItem({ include: ["name"] })}
+			{@render formStep({ id: "birthday", type: "date", question: "Your Birthday" })}
 		</div>
 	{:else if formState.step === steps.HOBBY}
 		<div>
-			<p>Name: {formState.name}</p>
-			<p>Birthday: {formState.birthday}</p>
-
-			<label for="hobby">Your Hobby</label>
-			<input type="text" name="hobby" id="hobby" bind:value={formState.hobby} />
+			{@render formItem({ include: ["name", "birthday"] })}
+			{@render formStep({ id: "hobby", type: "text", question: "Your Hobby" })}
 		</div>
 	{/if}
 	{#if formState.step === steps.FINISHED}
 		<div>
-			<p>Name: {formState.name}</p>
-			<p>Birthday: {formState.birthday}</p>
-			<p>Hobby: {formState.hobby}</p>
+			{@render formItem({ include: ["name", "birthday", "hobby"] })}
 		</div>
-	{/if}
-	{#if formState.error}
-		<div class="error">{formState.error}</div>
 	{/if}
 
 	<span class="buttons">
@@ -116,13 +108,38 @@
 			<button onclick={nextStep}>Finish</button>
 		{/if}
 	</span>
+
+	{#if formState.error}
+		<div class="error">{formState.error}</div>
+	{/if}
 </main>
+
+{#snippet formStep({ id, type, question }: {
+	id: keyof typeof formState,
+	type: "text" | "date",
+	question: string
+})}
+	<label for={id} {id}>{question}</label>
+	<input {type} {id} bind:value={formState[id]}>
+{/snippet}
+
+{#snippet formItem({ include = [] }: {
+	include: (keyof typeof formState)[]
+})}
+	{#each include as item}
+		<p>{item}: {formState[item]}</p>
+	{/each}
+{/snippet}
 
 <style>
 	span.buttons {
 		display: flex;
 		flex-direction: row;
 		gap: 1rem;
+	}
+
+	p {
+		text-transform: capitalize;
 	}
 
 	div.error {
