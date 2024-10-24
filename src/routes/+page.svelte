@@ -82,18 +82,18 @@
 		</div>
 	{:else if formState.step === steps.BIRTHDAY}
 		<div>
-			{@render formItem({ include: ["name"] })}
+			{@render formItems({ include: ["name"] })}
 			{@render formStep({ id: "birthday", type: "date", question: "Your Birthday" })}
 		</div>
 	{:else if formState.step === steps.HOBBY}
 		<div>
-			{@render formItem({ include: ["name", "birthday"] })}
+			{@render formItems({ include: ["name", "birthday"] })}
 			{@render formStep({ id: "hobby", type: "text", question: "Your Hobby" })}
 		</div>
 	{/if}
 	{#if formState.step === steps.FINISHED}
 		<div>
-			{@render formItem({ include: ["name", "birthday", "hobby"] })}
+			{@render formItems({ include: ["name", "birthday", "hobby"] })}
 		</div>
 	{/if}
 
@@ -123,7 +123,7 @@
 	<input {type} {id} bind:value={formState[id]}>
 {/snippet}
 
-{#snippet formItem({ include = [] }: {
+{#snippet formItems({ include = [] }: {
 	include: (keyof typeof formState)[]
 })}
 	{#each include as item}
